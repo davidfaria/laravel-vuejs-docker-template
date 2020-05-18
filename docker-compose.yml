@@ -1,0 +1,30 @@
+version: "3"
+
+networks:
+    app-network:
+      driver: bridge  
+
+services:
+    web:
+        build: ./images/nginx
+        image: web:latest
+        restart: always
+        ports: 
+            - "80:80"
+            # - "443:443"
+        networks: 
+            - app-network
+    
+    app:
+        build: ./src/app
+        image: app:latest
+        restart: always
+        networks: 
+            - app-network
+
+    api:
+        build: ./src/api
+        image: api:latest
+        restart: always
+        networks: 
+            - app-network

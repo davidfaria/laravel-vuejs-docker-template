@@ -1,0 +1,49 @@
+version: "3"
+
+networks:
+    app-network:
+      driver: bridge  
+
+services:
+    web:
+        build: ./images/nginx
+        image: web:latest
+        #container_name: web
+        restart: always
+        # tty: true
+        # depends_on:
+        #     - php
+        # volumes: 
+        #     - ./src/api:/usr/share/nginx/html/api
+        ports: 
+            - "80:80"
+            # - "443:443"
+        networks: 
+            - app-network
+    
+    app:
+        build: ./src/app
+        image: app:latest
+        #container_name: app
+        restart: always
+        networks: 
+            - app-network
+
+    api:
+        build: ./src/api
+        image: api:latest
+        # container_name: api
+        restart: always
+        # ports:
+        #     - "8181:8181"
+        networks: 
+            - app-network
+
+    # php:
+    #     image: bitnami/php-fpm:7.4
+    #     container_name: php
+    #     restart: always
+    #     networks: 
+    #         - app-network
+
+    
